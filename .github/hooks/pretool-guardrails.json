@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "description": "Pre-tool guardrails — enforce mandatory decisions and reactive code safety before code generation.",
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "name": "enforce-database-choice",
+      "description": "Require SQL or NoSQL(Couchbase/MongoDB) confirmation before generating any repository, entity, or persistence config.",
+      "matcher": {
+        "tool": "create_file",
+        "pathContains": ["Repository", "Entity", "Document", "r2dbc", "couchbase", "persistence"]
+      },
+      "run": "echo '[GUARDRAIL] Database choice must be confirmed before generating persistence code. Expected: SQL (PostgreSQL/MySQL/MariaDB) or NoSQL (Couchbase or MongoDB).' && exit 0"
+    },
+    {
+      "event": "PreToolUse",
+      "name": "reject-unsupported-nosql",
+      "description": "Block generation of Cassandra, Redis, or any NoSQL other than Couchbase or MongoDB.",
+      "matcher": {
+        "contentContains": ["CassandraRepository", "RedisRepository",
+                            "spring-data-cassandra", "spring-boot-starter-data-redis"]
+      },
+      "run": "echo '[GUARDRAIL] BLOCKED: Supported NoSQL engines are Couchbase and MongoDB only. Do not generate Cassandra or Redis persistence code.' && exit 1"
+    },
+    {
+      "event": "PreToolUse",
+      "name": "no-blocking-in-reactive-path",
+      "description": "Warn if blocking calls (.block(), Thread.sleep) are about to be added in controller/service/handler files.",
+      "matcher": {
+        "contentContains": [".block()", ".blockFirst()", ".blockLast()", "Thread.sleep"],
+        "pathContains": ["Controller", "Service", "Handler", "Filter"]
+      },
+      "run": "echo '[GUARDRAIL] WARNING: Blocking call detected in reactive service/controller path. Use reactive operators instead (flatMap, switchIfEmpty, onErrorMap).' && exit 1"
+    },
+    {
+      "event": "PreToolUse",
+      "name": "exception-contract-required",
+      "description": "Ensure global exception handler is present before adding new controllers.",
+      "matcher": {
+        "tool": "create_file",
+        "pathContains": ["Controller"]
+      },
+      "run": "echo '[GUARDRAIL] Ensure GlobalExceptionHandler and ApiErrorResponse are implemented before adding new controllers.' && exit 0"
+    },
+    {
+      "event": "PreToolUse",
+      "name": "no-secrets-in-config",
+      "description": "Block hardcoded secrets in application config files.",
+      "matcher": {
+        "pathContains": ["application.yml", "application.yaml", "application.properties"],
+        "contentContains": ["password: my", "password: pass", "password: secret",
+                            "apiKey: ", "token: ", "secret: sk-"]
+      },
+      "run": "echo '[GUARDRAIL] BLOCKED: Hardcoded secrets detected in config. Use environment variables or secrets manager references (${ENV_VAR}).' && exit 1"
+    }
+  ]
+}

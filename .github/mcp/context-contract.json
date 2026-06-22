@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Spring Boot WebFlux Agent Context Contract",
+  "description": "MCP context contract defining required decision inputs and policy enforcements for WebFlux agent workflows.",
+  "version": "1.0.0",
+
+  "context": {
+    "project": {
+      "type": "spring-boot-webflux",
+      "build_tool": "gradle",
+      "java_version": "21",
+      "spring_boot_version": "3.3.x"
+    },
+    "platform": {
+      "actuator": {
+        "enabled": true,
+        "exposed_endpoints": ["health", "info", "metrics"],
+        "health_show_details": "when_authorized"
+      },
+      "openapi": {
+        "provider": "springdoc-openapi-webflux",
+        "enabled": true,
+        "api_docs_path": "/v3/api-docs",
+        "swagger_ui_path": "/swagger-ui.html"
+      }
+    },
+    "database": {
+      "type": {
+        "description": "Must be confirmed before persistence code generation.",
+        "enum": ["sql", "nosql"],
+        "required": true
+      },
+      "sql_engine": {
+        "description": "Required only when database.type = sql.",
+        "enum": ["postgresql", "mysql", "mariadb"],
+        "required_when": "database.type == sql"
+      },
+      "nosql_engine": {
+        "description": "Required only when database.type = nosql.",
+        "enum": ["couchbase", "mongodb"],
+        "required_when": "database.type == nosql"
+      },
+      "couchbase_config": {
+        "bucket_name": "myapp-bucket",
+        "scope_name": "_default",
+        "auto_index": true,
+        "reactive_repositories": true
+      }
+    },
+    "logging": {
+      "structured_format": "json",
+      "rotation": {
+        "max_file_size": "50MB",
+        "max_history_days": 30,
+        "total_size_cap": "2GB",
+        "pattern": "app-%d{yyyy-MM-dd}.%i.log.gz"
+      },
+      "sensitive_fields_to_mask": [
+        "password", "authorization", "token", "apiKey",
+        "secret", "creditCard", "cvv", "ssn", "pin"
+      ]
+    },
+    "security": {
+      "type": "stateless-jwt",
+      "deny_by_default": true,
+      "csrf_disabled": true,
+      "csrf_disabled_reason": "Stateless REST API with JWT — no cookie-based sessions"
+    },
+    "exception_handling": {
+      "error_response_fields": [
+        "timestamp", "path", "status", "error", "code", "message", "traceId", "violations"
+      ],
+      "include_violations_for_codes": ["VALIDATION_ERROR", "REQUEST_BINDING_ERROR"],
+      "status_mappings": [
+        { "exception": "MethodArgumentNotValidException",      "status": 400, "code": "VALIDATION_ERROR" },
+        { "exception": "ConstraintViolationException",          "status": 400, "code": "VALIDATION_ERROR" },
+        { "exception": "WebExchangeBindException",              "status": 400, "code": "REQUEST_BINDING_ERROR" },
+        { "exception": "IllegalArgumentException",              "status": 400, "code": "BAD_REQUEST" },
+        { "exception": "ServerWebInputException",               "status": 400, "code": "MALFORMED_REQUEST" },
+        { "exception": "AuthenticationException",              "status": 401, "code": "UNAUTHORIZED" },
+        { "exception": "AccessDeniedException",                "status": 403, "code": "ACCESS_DENIED" },
+        { "exception": "ResourceNotFoundException",            "status": 404, "code": "RESOURCE_NOT_FOUND" },
+        { "exception": "DuplicateResourceException",           "status": 409, "code": "RESOURCE_CONFLICT" },
+        { "exception": "BusinessRuleException",                "status": 422, "code": "BUSINESS_RULE_VIOLATION" },
+        { "exception": "UnsupportedMediaTypeStatusException",  "status": 415, "code": "UNSUPPORTED_MEDIA_TYPE" },
+        { "exception": "ResponseStatusException",              "status": "embedded", "code": "RESPONSE_STATUS_EXCEPTION" },
+        { "exception": "TimeoutException",                     "status": 504, "code": "UPSTREAM_TIMEOUT" },
+        { "exception": "Throwable",                            "status": 500, "code": "INTERNAL_SERVER_ERROR" }
+      ]
+    },
+    "testing": {
+      "framework": "testcontainers",
+      "require_integration_tests": true,
+      "require_error_contract_assertions": true,
+      "testcontainers": {
+        "sql_image": "postgres:16-alpine",
+        "nosql_images": {
+          "couchbase": "couchbase/server:7.6",
+          "mongodb": "mongo:7.0"
+        },
+        "reuse": true
+      },
+      "mandatory_test_cases": [
+        "happy_path_create",
+        "happy_path_get",
+        "not_found_404",
+        "validation_error_400",
+        "duplicate_conflict_409",
+        "unauthenticated_401",
+        "insufficient_role_403"
+      ]
+    }
+  },
+
+  "policy": {
+    "enforce_build_tool": "gradle",
+    "require_spring_actuator": true,
+    "require_swagger_openapi": true,
+    "require_database_choice_before_persistence_generation": true,
+    "enforce_nosql_engines": ["couchbase", "mongodb"],
+    "reject_nosql_alternatives": ["cassandra", "redis", "dynamodb", "elasticsearch"],
+    "require_global_exception_handling": true,
+    "require_testcontainers_for_integration_tests": true,
+    "require_request_response_logging_filter": true,
+    "require_log_rotation_config": true,
+    "require_spring_security_hardening": true,
+    "deny_by_default_security": true,
+    "no_blocking_in_reactive_path": true,
+    "no_secrets_in_config_files": true,
+    "no_stack_trace_in_client_response": true
+  }
+}

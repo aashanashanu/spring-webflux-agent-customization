@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "description": "Post-tool quality gates — verify code quality, security, and test coverage after code generation.",
+  "hooks": [
+    {
+      "event": "PostToolUse",
+      "name": "remind-run-tests",
+      "description": "After any Java source file change, remind to run the test suite including Testcontainers integration tests.",
+      "matcher": {
+        "tool": "create_file",
+        "pathContains": [".java"]
+      },
+      "run": "echo '[QUALITY GATE] Run tests: ./gradlew test integrationTest' && exit 0"
+    },
+    {
+      "event": "PostToolUse",
+      "name": "check-exception-handler-coverage",
+      "description": "After adding a new exception class, verify it is mapped in GlobalExceptionHandler.",
+      "matcher": {
+        "pathContains": ["Exception.java"]
+      },
+      "run": "echo '[QUALITY GATE] Verify the new exception class is mapped in GlobalExceptionHandler with correct HTTP status and code.' && exit 0"
+    },
+    {
+      "event": "PostToolUse",
+      "name": "security-log-scan",
+      "description": "After modifying log-related files or filters, verify sensitive fields are masked.",
+      "matcher": {
+        "pathContains": ["Filter.java", "LoggingFilter.java", "logback"]
+      },
+      "run": "echo '[QUALITY GATE] Verify sensitive fields (password, token, authorization, creditCard, ssn) are masked in all log statements.' && exit 0"
+    },
+    {
+      "event": "PostToolUse",
+      "name": "verify-reactive-return-types",
+      "description": "After modifying a Service or Controller, confirm return types are Mono/Flux.",
+      "matcher": {
+        "pathContains": ["Service.java", "ServiceImpl.java", "Controller.java"]
+      },
+      "run": "echo '[QUALITY GATE] Verify all public methods in Service/Controller return Mono<T> or Flux<T>. No void, Optional, or List return types.' && exit 0"
+    },
+    {
+      "event": "PostToolUse",
+      "name": "check-dto-validation-annotations",
+      "description": "After creating request DTO classes, verify validation annotations are present.",
+      "matcher": {
+        "pathContains": ["Request.java", "dto/", "Dto.java"]
+      },
+      "run": "echo '[QUALITY GATE] Verify request DTO has field-level validation annotations (@NotNull, @NotBlank, @Valid, etc.) and is not an exposed entity class.' && exit 0"
+    },
+    {
+      "event": "PostToolUse",
+      "name": "verify-security-route-updated",
+      "description": "After adding a new controller, verify SecurityWebFilterChain is updated with route rules.",
+      "matcher": {
+        "pathContains": ["Controller.java"]
+      },
+      "run": "echo '[QUALITY GATE] Verify SecurityConfig.SecurityWebFilterChain includes authorization rules for all routes in the new controller.' && exit 0"
+    },
+    {
+      "event": "PostToolUse",
+      "name": "check-test-coverage",
+      "description": "After adding a controller or service, verify corresponding test files exist.",
+      "matcher": {
+        "tool": "create_file",
+        "pathContains": ["src/main/java"]
+      },
+      "run": "echo '[QUALITY GATE] Verify integration test (IT.java) and unit test (Test.java) exist for the new class. Tests must cover happy-path, 400, 401, 403, 404 scenarios.' && exit 0"
+    }
+  ]
+}
