@@ -38,7 +38,7 @@ description: Design and implement enterprise-ready AI agents, orchestration flow
 
 ## Implementation guidance
 - Single-agent: simple workflows with bounded tools.
-- Multi-agent: supervisor + specialists with clear handoff context.
+- Multi-agent: Orchestrator + specialists with clear handoff context.
 - Include memory strategy (session, short-term, long-term) and retrieval policy.
 - Integrate governance checks for PII, secrets, and unsafe content.
 

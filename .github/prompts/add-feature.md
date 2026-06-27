@@ -1,6 +1,6 @@
 # Prompt: Add Feature
 
-Use the supervisor agent to deliver a new feature end-to-end.
+Use the Orchestrator agent to deliver a new feature end-to-end.
 
 ## Input
 - Feature summary

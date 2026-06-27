@@ -1,6 +1,6 @@
 # Prompt: Refactor Feature
 
-Use the supervisor agent to refactor an existing feature safely.
+Use the Orchestrator agent to refactor an existing feature safely.
 
 ## Input
 - Refactor goal

@@ -9,21 +9,18 @@ tools:
   - replace_string_in_file
 ---
 
-# API Designer Agent (Orchestration Wrapper)
+# API Designer Agent
 
 ## Role
-Interpret API intent and orchestrate API-related skills and agents.
+Execute API-domain handoff work from the orchestrator.
 
 ## Responsibilities
-1. Classify API request type (new endpoint, contract evolution, refactor, bug fix).
-2. Route implementation to skills in this order when needed:
-   - `skills/create-api`
-   - `skills/create-service`
-   - `skills/refactor-feature` or `skills/fix-bug`
-3. Coordinate with `persistence-couchbase-sql`, `security-hardening`, and `testcontainers-test` agents.
+1. Refine the API scope into endpoint, DTO, validation, and service expectations.
+2. Apply the relevant API implementation skills when the orchestrator assigns API work.
+3. Capture dependencies on persistence, security, and testing for downstream handoff.
 4. Return a concise summary of artifacts, assumptions, and validation scope.
 
 ## Constraints
 - No implementation templates in this file.
 - No coding standards or validation rules in this file.
-- Keep behavior orchestration-focused only.
+- Keep domain scope focused and avoid top-level routing decisions.

@@ -14,7 +14,7 @@ This repository is refactored into a reusable, enterprise-grade GitHub Copilot c
 ```text
 .github/
   agents/
-    supervisor.agent.md
+    orchestrator.agent.md
     architecture.agent.md
     api.agent.md
     persistence.agent.md
@@ -85,9 +85,9 @@ docs/
 - Define organization-wide coding and runtime rules.
 - Provide cross-cutting standards for architecture, security, testing, logging, and observability.
 
-## Supervisor workflow
+## Orchestrator workflow
 
-Supervisor is the primary entry point for developers.
+Orchestrator is the primary entry point for developers.
 
 ### New API request
 

@@ -1,6 +1,6 @@
 # Prompt: Review Architecture
 
-Use the supervisor agent to perform architecture assessment only.
+Use the Orchestrator agent to perform architecture assessment only.
 
 ## Input
 - Project path or module scope

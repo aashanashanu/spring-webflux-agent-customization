@@ -1,6 +1,6 @@
 # Prompt: Fix Bug
 
-Use the supervisor agent for root-cause-first bug resolution.
+Use the Orchestrator agent for root-cause-first bug resolution.
 
 ## Input
 - Reproduction steps

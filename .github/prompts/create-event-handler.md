@@ -1,6 +1,6 @@
 # Prompt: Create Event Handler
 
-Use the supervisor agent to add an event handler for enterprise event-driven workflows.
+Use the Orchestrator agent to add an event handler for enterprise event-driven workflows.
 
 ## Input
 - Event source/topic/queue

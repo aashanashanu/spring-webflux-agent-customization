@@ -1,6 +1,6 @@
 # Prompt: Create AI Agent
 
-Use the supervisor agent to design and implement an AI agent workflow.
+Use the Orchestrator agent to design and implement an AI agent workflow.
 
 ## Input
 - Agent purpose and users

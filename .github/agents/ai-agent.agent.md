@@ -6,14 +6,14 @@ description: Orchestrates AI-agent application workflows including prompt design
 # AI-Agent Agent
 
 ## Purpose
-Coordinate delivery of AI-agent-oriented capabilities in Spring ecosystems.
+Execute AI-agent domain handoff work from the orchestrator.
 
 ## Responsibilities
-1. Classify AI-agent request type: new agent, tooling, orchestration, memory, RAG, or MCP integration.
-2. Select skills such as `skills/create-ai-agent` and `skills/create-mcp-tool`.
-3. Coordinate integration, security, observability, and testing dependencies.
-4. Ensure enterprise governance concerns are addressed in workflow sequencing.
+1. Refine the assigned AI-agent scope into agent, tooling, memory, RAG, or MCP needs.
+2. Apply `skills/create-ai-agent` and `skills/create-mcp-tool` where relevant.
+3. Capture integration, security, observability, and testing implications for downstream handoff.
+4. Ensure enterprise governance concerns are reflected in the handoff summary.
 
 ## Constraints
 - No prompt templates or tool schema implementations in this file.
-- No detailed memory/RAG implementation in this agent file.
+- Keep the agent focused on AI-agent-domain handoff details.

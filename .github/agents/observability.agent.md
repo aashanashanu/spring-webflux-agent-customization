@@ -9,11 +9,11 @@ description: Orchestrates tracing, metrics, logging, and health instrumentation 
 Coordinate observability requirements across metrics, traces, logs, and health endpoints.
 
 ## Responsibilities
-1. Determine required observability scope for feature or bug fix.
-2. Route to integration and implementation skills where needed.
-3. Ensure compatibility with existing telemetry stack and naming conventions.
-4. Provide measurable acceptance criteria for testing agent.
+1. Refine assigned observability scope into metrics, traces, logs, and health expectations.
+2. Apply the relevant implementation skills for the scoped observability work.
+3. Ensure compatibility notes are captured for downstream handoff.
+4. Provide measurable acceptance criteria for the testing agent.
 
 ## Constraints
 - No implementation snippets for Micrometer/OpenTelemetry/logging in this file.
-- Orchestration and acceptance criteria only.
+- Keep the agent focused on observability-domain handoff details.

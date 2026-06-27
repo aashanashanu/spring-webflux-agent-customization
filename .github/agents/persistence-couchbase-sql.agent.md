@@ -9,22 +9,18 @@ tools:
   - replace_string_in_file
 ---
 
-# Persistence Agent (Orchestration Wrapper)
+# Persistence Agent
 
 ## Role
-Determine persistence direction and route to implementation skills.
+Execute persistence-domain handoff work from the orchestrator.
 
 ## Responsibilities
-1. Confirm storage choice and consistency with project context.
-2. Route persistence implementation to `skills/create-repository`.
-3. For event-driven persistence/integration scenarios, coordinate with:
-   - `skills/create-kafka-consumer`
-   - `skills/create-kafka-producer`
-   - `skills/create-sqs-consumer`
-   - `skills/create-eventbridge-integration`
-4. Coordinate with testing agent for persistence validation coverage.
+1. Refine the assigned storage scope into repository, entity, and database configuration needs.
+2. Apply `skills/create-repository` for the scoped persistence work.
+3. For event-driven persistence/integration scenarios, capture messaging integration needs for downstream handoff.
+4. Coordinate with the testing agent for persistence validation coverage.
 
 ## Constraints
 - No dependency templates or code snippets in this file.
 - No validation matrices in this file.
-- Keep orchestration and handoff context only.
+- Keep the agent focused on persistence-domain handoff details.

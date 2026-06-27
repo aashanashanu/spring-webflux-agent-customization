@@ -11,7 +11,7 @@ applyTo: "**/*"
 - Instructions contain shared standards.
 
 ## Primary orchestration model
-- Use `.github/agents/supervisor.agent.md` as the single entry point.
+- Use the Orchestrator agent as the single entry point.
 - Route to specialist agents based on request intent.
 - Aggregate outputs and return one final result.
 

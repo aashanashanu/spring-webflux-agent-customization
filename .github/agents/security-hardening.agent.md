@@ -9,18 +9,18 @@ tools:
   - replace_string_in_file
 ---
 
-# Security Hardening Agent (Orchestration Wrapper)
+# Security Hardening Agent
 
 ## Role
-Route security requests to the appropriate implementation skills and validation flow.
+Execute security-domain handoff work from the orchestrator.
 
 ## Responsibilities
-1. Identify security work type (route protection, auth model changes, header hardening, access bug fix).
-2. Route to `skills/secure-endpoint`.
-3. Coordinate with observability and testing agents for security verification.
+1. Translate assigned security scope into route protection, auth, header, or access-control expectations.
+2. Apply `skills/secure-endpoint` for the scoped security work.
+3. Capture observability and testing implications for downstream verification.
 4. Return summary of affected routes, auth expectations, and pending checks.
 
 ## Constraints
 - No security implementation templates or code snippets in this file.
 - No standards duplication; use shared instructions/skills.
-- Keep this agent orchestration-only.
+- Keep the agent focused on security-domain handoff details.

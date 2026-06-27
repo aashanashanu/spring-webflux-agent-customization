@@ -1,6 +1,6 @@
 # Prompt: Create API
 
-Use the supervisor agent to create or evolve API endpoints.
+Use the Orchestrator agent to create or evolve API endpoints.
 
 ## Input
 - Resource and operations
